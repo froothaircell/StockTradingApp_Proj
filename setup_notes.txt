@@ -1,0 +1,97 @@
+_____ SETUP NOTES ______
+(To anyone using this, document the additions you make
+to the overall environment, and make sure they don't 
+conflict with others, and probably set up a venv when 
+using this project)
+
+Python Language Version: 3.12.10
+> It'll probably be a good idea to set up a virtual 
+environment for the project on your local machine to
+avoid polluting the global python environment with a
+bunch of packages
+
+Packages: 
+> Whenever you install a new package to the project 
+environment, make sure to run the following code 
+------------------------------------------------------
+pip freeze > requirements.txt
+------------------------------------------------------
+to ensure that, upon a new commit, the new package 
+is tracked via requirements.txt
+> Make sure to run pip check for any package conflicts
+> Use requirements.txt to set up all the required 
+packages. Use the code:
+------------------------------------------------------
+pip install -r requirements.txt
+------------------------------------------------------
+> For API keys, we'll try to keep each global 
+environment as clean as possible, so we'll just create
+a .env file in the root folder of the project, and set 
+up the API keys there, in the format: 
+------------------------------------------------------
+GOOGLE_API_KEY= <key> 
+LANGSMITH_API_KEY= <key> 
+------------------------------------------------------
+Once that's done, just run the following code to import
+the environment: 
+------------------------------------------------------
+from dotenv import load_dotenv
+
+load_dotenv();
+------------------------------------------------------
+> Each collaborator will use their own Gemini API key 
+by creating an account at https://aistudio.google.com/
+> Each collaborator will use their own LangSmith key,
+but will be included in the same team, so before trying
+to generate that, request to be added to the same team
+this'll allow for easy monitoring of the tracing data
+for all the API keys we have on the same team
+
+> Data Processing and Market Data
+    > yfinance — fetch historical stock data from Yahoo 
+    Finance, the go-to free option
+    > pandas — data manipulation, essential for time 
+    series financial data
+    > numpy — numerical operations, foundational for ML 
+    work
+
+> ML & Reinforcement Learning
+    > scikit-learn — general ML utilities, preprocessing, 
+    metrics
+    > stable-baselines3 — the standard library for RL 
+    algorithms, well documented and maintained
+    > gymnasium — RL environment framework (what 
+    stable-baselines3 builds on)
+    > torch — PyTorch, needed as the backend for most 
+    modern ML work
+
+> RAG Specific
+    > faiss-cpu — vector store for RAG, efficient 
+    similarity search (use faiss-gpu if you have a CUDA GPU)
+    > langchain-community — contains many document loaders 
+    and vector store integrations
+    > tiktoken — token counting, useful for managing context 
+    windows
+
+> Utilities
+    > python-dotenv — helpful for importing environment 
+    variables from a .env file
+    > jupyter — for exploratory analysis and visualizing results
+    > matplotlib / plotly — plotting trading performance and metrics
+    > tqdm — progress bars for long evaluation runs
+
+> Testing
+    > pytest — standard Python testing framework
+
+LLM Related Considerations:
+> For now, the project will be set up with Gemini free 
+tier API so we can at least do some prototyping, this
+will be changed to OpenAI or Anthropic once we want to 
+move to proper testing because the rate limits will be
+pretty harsh. Additionally, if we run into financial
+constraints when trying to break free from our rate 
+limit dependency, we can still integrate local models
+with a bit of elbow grease.
+> LangSmith will be setup with GCP in the EU region to 
+avoid any issues with GDPR, for the purposes of this 
+project, this shouldn't be too big a deal
